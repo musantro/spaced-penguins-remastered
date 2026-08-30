@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "kind": "static-browser-port-baseline",
+  "capturedAtLocalDate": "2026-08-30",
+  "canonicalProgram": {
+    "dcrSha256": "22d7a9f9455467c277a0ea920cf1042073f7744446aaecb40476f586941df102",
+    "reconstructedDirSha256": "a655723a84fcc6e575c6da4371fff0aeb0bdee2ba2c40c4d6c0a9a54cfaf99d8"
+  },
+  "scoreInventory": {
+    "primaryRun": "score-inventory-64-20260830",
+    "tailRun": "score-inventory-final-61-64-20260830",
+    "primaryRequestSha256": "ccb6bc4e5fdf8ade348ce85a1ea3fd67069c5f99766530a340777d2892ab9f24",
+    "tailRequestSha256": "6252008e199d4ab1db1b91f0782b94a4f6de65abb09783ba94f3241df8b2f589",
+    "sha256ConcatenatedFrameTsvBytesInFrameOrder": "c30afe9d9e478c385fa964ec53616b689085a1ae5f7554d9a437a25c99f9aaa8",
+    "frameCount": 64,
+    "spriteRows": 2108,
+    "occupiedChannels": 74,
+    "referencedMembers": 114
+  },
+  "content": {
+    "cataloguedMembers": 140,
+    "playableLevels": 25,
+    "bitmapPngFiles": 48,
+    "vectorSwfFiles": 18,
+    "generatedSvgFiles": 18,
+    "wavFiles": 5
+  },
+  "stateConformance": [
+    {
+      "runId": "canonical-api-120",
+      "traceSha256": "0d01cb85c7a643247c7b9ef1ca5bbe625be8a793e101dc600f008cc383a81777",
+      "samples": 121
+    },
+    {
+      "runId": "conformance-level02-bonus-20260830",
+      "traceSha256": "2c5d6cdf3edc0fb87cfe2ce94d21089f220c7f933f43b09aaa7be169bb62898c",
+      "samples": 31
+    },
+    {
+      "runId": "conformance-level17-target-orbit-20260830",
+      "traceSha256": "8a647da9fdd33b9e4ceb5627307e5afe5c3f81e460ea60cba255b69025a8e20b",
+      "samples": 61
+    },
+    {
+      "runId": "conformance-level22-multi-orbit-20260830",
+      "traceSha256": "51ed12fdcd6b03d12b3de694d4aa62aab1f1b9a621506af00de35e51ba9227ac",
+      "samples": 31
+    },
+    {
+      "runId": "all-levels-physics-and-screens-20260830-v2",
+      "captureSetSha256": "37b040cdf7ff10afbee064fdd1288bca661307b88f03504a93f81a4e967fbe28",
+      "samplesUsed": 50
+    }
+  ],
+  "pixelConformance": {
+    "dimensions": { "width": 500, "height": 400 },
+    "pixelmatchThreshold": 0.1,
+    "screens": [
+      {
+        "name": "intro",
+        "goldenSha256": "219c5e996d558deda841df350ca42a78e19546c98af68a17688984bc1b0eaafc",
+        "differentPixels": 67
+      },
+      {
+        "name": "tips",
+        "goldenSha256": "152a6eb5a4b028bfddeaf60d2eac98cb5cdf3c52ca2273f81adb5623ed09b0a6",
+        "differentPixels": 5
+      },
+      {
+        "name": "end-stats",
+        "goldenSha256": "223ad8d6f12ce233037b8d5f37a728ed0a85f7971bbdff14a495eb5828467833",
+        "differentPixels": 2
+      },
+      {
+        "name": "high-score-form",
+        "goldenSha256": "caaaf64370ac0a25c95f7ba1db43f19d81ce27f15fda07330fcdfa0dbdb9d746",
+        "differentPixels": 1331
+      },
+      {
+        "name": "high-score-sending",
+        "goldenSha256": "8f67dbbcd9b8fbdc6b42eb8bbdae0fe4153e83b38bfd1e4ed9c43a127e42660f",
+        "differentPixels": 0
+      }
+    ]
+  },
+  "compatibilityTreatment": {
+    "obsoleteHighScoreCgiCalled": false,
+    "behavior": "completed runs qualify locally; original validation and sending/end screens are preserved"
+  }
+}

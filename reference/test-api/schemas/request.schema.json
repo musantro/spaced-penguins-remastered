@@ -8,7 +8,7 @@
   "properties": {
     "schemaVersion": { "const": 1 },
     "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$" },
-    "operation": { "enum": ["physics", "state", "verify-all"] },
+    "operation": { "enum": ["physics", "state", "verify-all", "score"] },
     "target": { "$ref": "#/$defs/target" },
     "targets": {
       "type": "array",
@@ -43,6 +43,10 @@
     },
     {
       "if": { "properties": { "operation": { "const": "verify-all" } } },
+      "then": { "required": ["targets"] }
+    },
+    {
+      "if": { "properties": { "operation": { "const": "score" } } },
       "then": { "required": ["targets"] }
     }
   ],

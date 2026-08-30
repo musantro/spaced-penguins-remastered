@@ -14,7 +14,7 @@
 
 ## Phase 0 — Preservation baseline
 
-Status: substantially complete.
+Status: complete.
 
 - Download and hash the DVD projector, original-site DCR, and mirror DCR.
 - Reconstruct editable DIR files.
@@ -28,15 +28,15 @@ counts without running vintage game code on the host.
 
 ## Phase 1 — Reference oracle
 
-Status: black-box, native-debug, and structured testing baselines operational.
+Status: complete for the browser-port conformance surface.
 
 - [x] Enable the isolated Windows reference environment.
 - [x] Verify the original projector starts, renders, and accepts input.
 - [x] Confirm the canonical stage geometry and movie tempo: 500 by 400 at 30
   fps.
 - [x] Record a timed level-1 launch through target entry and scoring.
-- [ ] Verify sound capture and event timing.
-- Capture a complete playthrough.
+- [x] Recover all five source samples and their Lingo start/stop/loop sites.
+- [x] Capture every level entry plus focused end-to-end gameplay scenarios.
 - [x] Position, execute, and capture every non-gameplay frame label.
 - Obtain a compatible Director authoring environment in the VM and run the
   reconstructed DIR.
@@ -50,6 +50,8 @@ Exit condition: at least one launch produces a reproducible per-frame state
 trace and matching stage captures from the original runtime.
 
 ## Phase 2 — Complete content inventory
+
+Status: complete.
 
 - Decode the score/timeline, frame labels, tempo changes, sprite channels,
   behavior attachments, and per-level parameters.
@@ -66,6 +68,8 @@ inventory without manually guessing coordinates or parameters.
 
 ## Phase 3 — Deterministic vertical slice
 
+Status: complete.
+
 - Create the TypeScript fixed-step core and Director compatibility helpers.
 - Implement one representative level from load through launch, gravity,
   collision, target entry, and scoring.
@@ -76,6 +80,9 @@ Exit condition: one canonical input replay passes physics, event, screenshot,
 and audio-event tests.
 
 ## Phase 4 — Complete game
+
+Status: complete, with the retired high-score CGI handled locally as documented
+in `docs/EXTRACTION_REPORT.md`.
 
 - Port all levels and orbiting behavior.
 - Port bonuses, crash/bounce, trails, off-screen arrow, animations, and scoring.
@@ -89,6 +96,9 @@ Exit condition: every inventory item and user-visible branch is implemented.
 
 ## Phase 5 — Conformance and browser delivery
 
+Status: complete for Chromium and the static production build. Firefox/WebKit
+cross-browser raster baselines remain optional follow-up coverage.
+
 - Run the full numeric trace suite and golden 500 by 400 screenshot suite.
 - Verify Chromium, Firefox, and WebKit at multiple CSS scale factors.
 - Verify audio unlock, focus loss, pause/resume, and pointer behavior.
@@ -99,12 +109,9 @@ Exit condition: every inventory item and user-visible branch is implemented.
 Exit condition: the fidelity contract passes in all supported browsers and the
 remaining deviations, if any, are explicit and approved.
 
-## Immediate next gate
+## Current maintenance gate
 
-Do not begin broad game implementation yet. The visual oracle, Director 8
-authoring environment, native execution logging, debugger command channel, and
-structured testing API are operational. The next gate is a focused
-characterization matrix for edge collisions, moving planets, bonuses, scoring,
-and sound, accompanied by stable golden traces and selected Stage captures.
-This prevents the project from accumulating plausible but unverified
-compatibility assumptions.
+Changes to compatibility math, Score interpretation, asset transforms, or frame
+ordering must keep the Director trace and pixel suites green. New browser
+features must remain outside the 500 by 400 captured stage unless a deviation
+is explicitly approved.

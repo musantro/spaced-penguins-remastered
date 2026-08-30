@@ -9,6 +9,12 @@
   "packageManager": "pnpm@10.10.0",
   "scripts": {
     "test": "node --test tools/reference/test-api/test/*.test.mjs",
+    "test:web": "vitest run",
+    "test:e2e": "playwright test",
+    "assets:generate": "node tools/web/generate-content.mjs",
+    "dev": "vite",
+    "build": "pnpm assets:generate && tsc --noEmit && vite build",
+    "preview": "vite preview",
     "setup:environment": "powershell -NoProfile -ExecutionPolicy Bypass -File setup-environment.ps1",
     "reference:fetch": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/fetch-originals.ps1",
     "reference:decompile": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/decompile-originals.ps1",
@@ -24,11 +30,19 @@
     "reference:assets": "node tools/reference/test-api/cli.mjs assets",
     "reference:screens": "node tools/reference/test-api/cli.mjs screens",
     "reference:levels": "node tools/reference/test-api/cli.mjs levels",
+    "reference:score": "node tools/reference/test-api/cli.mjs score",
     "reference:verify-all": "node tools/reference/test-api/cli.mjs verify-all --run",
     "reference:physics": "node tools/reference/test-api/cli.mjs physics --run",
     "reference:state": "node tools/reference/test-api/cli.mjs state --run"
   },
   "devDependencies": {
-    "projectorrays": "1.1.1"
+    "@playwright/test": "^1.62.1",
+    "@types/pngjs": "^6.0.5",
+    "pixelmatch": "^7.2.0",
+    "pngjs": "^7.0.0",
+    "projectorrays": "1.1.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   }
 }

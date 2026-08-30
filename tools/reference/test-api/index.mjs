@@ -4,11 +4,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 export { listAssets, listLevels, listScreens } from "./catalog.mjs";
-export { createPhysicsRequest, createStateRequest, createVerificationRequest, validateRequest } from "./request.mjs";
+export { createPhysicsRequest, createScoreInventoryRequest, createStateRequest, createVerificationRequest, validateRequest } from "./request.mjs";
 export { parseTraceFile } from "./trace.mjs";
 
 import { validateRequest } from "./request.mjs";
 import { parseTraceFile } from "./trace.mjs";
+import { parseScoreFiles } from "./score.mjs";
 
 export const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
 
@@ -49,6 +50,15 @@ export function runReferenceRequest(request, { timeoutSeconds = 240 } = {}) {
       throw new Error(`Falló la verificación de ${failedIds.join(", ")}. Informe: ${verificationPath}`);
     }
     return { ...status, runDirectory, verification: verificationPath, summary: verification.summary };
+  }
+  if (request.operation === "score") {
+    const scorePaths = (Array.isArray(status.scoreEntries) ? status.scoreEntries : [status.scoreEntries])
+      .filter(Boolean)
+      .map((entry) => path.join(runDirectory, entry.score));
+    const score = parseScoreFiles(scorePaths);
+    const scorePath = path.join(runDirectory, "score.json");
+    fs.writeFileSync(scorePath, `${JSON.stringify(score, null, 2)}\n`, "utf8");
+    return { ...status, runDirectory, score: scorePath, summary: score.summary };
   }
 
   const tracePath = path.join(runDirectory, status.rawTrace);
@@ -119,6 +129,7 @@ function normalizeVerificationRun(request, status, runDirectory) {
       rawTrace: produced.rawTrace,
       trace: path.basename(tracePath),
       screenshot: produced.screenshot,
+      score: produced.score ?? null,
       screenshotDimensions: dimensions,
       entryScreenshot: produced.entryScreenshot ?? null,
       entryScreenshotDimensions,

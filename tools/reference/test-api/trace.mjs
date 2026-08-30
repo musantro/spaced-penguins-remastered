@@ -34,7 +34,7 @@ function normalizeSample(row) {
   const numeric = [
     "sample", "ticks", "movieFrame", "gpsChannel", "pointX", "pointY", "velocityX", "velocityY",
     "spriteX", "spriteY", "stateFrameCount", "tries", "distance", "score", "highScore", "level", "stageInside", "flightInside",
-    "targetContact",
+    "targetContact", "targetX", "targetY",
   ];
   const result = { ...row };
   for (const key of numeric) result[key] = parseDirectorNumber(row[key]);
@@ -79,11 +79,16 @@ function parsePlanets(value = "") {
 function parseBonuses(value = "") {
   if (!value) return [];
   return value.split("|").filter(Boolean).map((token) => {
-    const [channel, state, valueText, memberNum, rotation, rotationVelocity] = token.split(":");
+    const [channel, state, valueText, memberNum, rotation, rotationVelocity, x, y, orbitVX, orbitVY, floatX, floatY] = token.split(":");
     return {
       channel: Number(channel), state: state.replace(/^#/, ""), value: parseDirectorNumber(valueText),
       memberNum: parseDirectorNumber(memberNum), rotation: parseDirectorNumber(rotation),
       rotationVelocity: parseDirectorNumber(rotationVelocity),
+      point: x === "" || x === undefined ? null : { x: parseDirectorNumber(x), y: parseDirectorNumber(y) },
+      orbit: orbitVX === "" || orbitVX === undefined ? null : {
+        velocity: { x: parseDirectorNumber(orbitVX), y: parseDirectorNumber(orbitVY) },
+        floatPoint: { x: parseDirectorNumber(floatX), y: parseDirectorNumber(floatY) },
+      },
     };
   });
 }
@@ -127,6 +132,7 @@ function snapshotFromSample(sample) {
           frameCount: sample.stateFrameCount,
           tries: sample.tries,
           distance: sample.distance,
+          targetPoint: sample.targetX == null ? null : { x: sample.targetX, y: sample.targetY },
         }
       : null,
     planets: sample.planets,

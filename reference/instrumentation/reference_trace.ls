@@ -165,6 +165,23 @@ on referenceConfirmTarget tempToken
   the traceLogFile = EMPTY
 end
 
+-- Export the authored Score state at the current frame before playback mutates
+-- any sprite.  The web port consumes this as content data; it is not derived
+-- from the implementation under test.
+on referenceExportScoreFrame tempToken
+  the traceLogFile = "C:/Reference/Run/score-" & tempToken & ".tsv"
+  put "target" & TAB & "movieFrame" & TAB & "frameLabel" & TAB & "channel" & TAB & "castLibNum" & TAB & "memberNum" & TAB & "memberName" & TAB & "memberType" & TAB & "locH" & TAB & "locV" & TAB & "width" & TAB & "height" & TAB & "rotation" & TAB & "skew" & TAB & "blend" & TAB & "visible" & TAB & "ink" & TAB & "rectLeft" & TAB & "rectTop" & TAB & "rectRight" & TAB & "rectBottom" & TAB & "foreColor" & TAB & "backColor" & TAB & "scriptList"
+  repeat with tempChannel = 1 to 150
+    if sprite(tempChannel).memberNum <> 0 then
+      tempSprite = sprite(tempChannel)
+      tempMember = tempSprite.member
+      tempRect = tempSprite.rect
+      put tempToken & TAB & string(the frame) & TAB & string(the frameLabel) & TAB & string(tempChannel) & TAB & string(tempMember.castLibNum) & TAB & string(tempSprite.memberNum) & TAB & tempMember.name & TAB & string(tempMember.type) & TAB & string(tempSprite.locH) & TAB & string(tempSprite.locV) & TAB & string(tempSprite.width) & TAB & string(tempSprite.height) & TAB & string(tempSprite.rotation) & TAB & string(tempSprite.skew) & TAB & string(tempSprite.blend) & TAB & string(tempSprite.visible) & TAB & string(tempSprite.ink) & TAB & string(tempRect.left) & TAB & string(tempRect.top) & TAB & string(tempRect.right) & TAB & string(tempRect.bottom) & TAB & string(tempSprite.foreColor) & TAB & string(tempSprite.backColor) & TAB & string(tempSprite.scriptList)
+    end if
+  end repeat
+  the traceLogFile = EMPTY
+end
+
 on referenceStartCapture tempFrameCount
   gReferenceTraceSamples = 0
   gReferenceTraceLimit = tempFrameCount
@@ -172,7 +189,7 @@ on referenceStartCapture tempFrameCount
   gReferenceLastState = VOID
   gReferenceLastBonuses = EMPTY
   the traceLogFile = "C:/Reference/Run/raw-trace.tsv"
-  put "sample" & TAB & "ticks" & TAB & "movieFrame" & TAB & "frameLabel" & TAB & "phase" & TAB & "gpsChannel" & TAB & "state" & TAB & "pointX" & TAB & "pointY" & TAB & "velocityX" & TAB & "velocityY" & TAB & "spriteX" & TAB & "spriteY" & TAB & "stateFrameCount" & TAB & "tries" & TAB & "distance" & TAB & "score" & TAB & "highScore" & TAB & "level" & TAB & "alert" & TAB & "stageInside" & TAB & "flightInside" & TAB & "targetContact" & TAB & "planetInfluences" & TAB & "planetContacts" & TAB & "planets" & TAB & "bonuses" & TAB & "event"
+  put "sample" & TAB & "ticks" & TAB & "movieFrame" & TAB & "frameLabel" & TAB & "phase" & TAB & "gpsChannel" & TAB & "state" & TAB & "pointX" & TAB & "pointY" & TAB & "velocityX" & TAB & "velocityY" & TAB & "spriteX" & TAB & "spriteY" & TAB & "stateFrameCount" & TAB & "tries" & TAB & "distance" & TAB & "score" & TAB & "highScore" & TAB & "level" & TAB & "alert" & TAB & "stageInside" & TAB & "flightInside" & TAB & "targetContact" & TAB & "targetX" & TAB & "targetY" & TAB & "planetInfluences" & TAB & "planetContacts" & TAB & "planets" & TAB & "bonuses" & TAB & "event"
   referenceRecordState("initial")
 end
 
@@ -199,6 +216,8 @@ on referenceRecordState tempPhase
   tempStageInside = VOID
   tempFlightInside = VOID
   tempTargetContact = 0
+  tempTargetX = VOID
+  tempTargetY = VOID
   tempInfluences = EMPTY
   tempContacts = EMPTY
   tempPlanets = EMPTY
@@ -222,6 +241,8 @@ on referenceRecordState tempPhase
     if tempState = #hitTarget then
       tempTargetContact = 1
     end if
+    tempTargetX = sprite(tempGPS.pTarget).loc[1]
+    tempTargetY = sprite(tempGPS.pTarget).loc[2]
 
     if not voidP(gPlanets) then
       repeat with tempPlanetIndex = 1 to gPlanets.count
@@ -260,7 +281,12 @@ on referenceRecordState tempPhase
         if tempBonuses <> EMPTY then
           put "|" after tempBonuses
         end if
-        put string(tempBonusChannel) & ":" & string(tempBonus.pState) & ":" & string(tempBonus.pValue) & ":" & string(tempBonus.pSprite.memberNum) & ":" & string(tempBonus.pSprite.rotation) & ":" & string(tempBonus.pRotationVel) after tempBonuses
+        tempBonusOrbit = referenceBehaviorInstance(tempBonusChannel, "Orbiting")
+        tempBonusOrbitData = "::::"
+        if not voidP(tempBonusOrbit) then
+          tempBonusOrbitData = ":" & string(tempBonusOrbit.pVX) & ":" & string(tempBonusOrbit.pVY) & ":" & string(tempBonusOrbit.pFloatLoc[1]) & ":" & string(tempBonusOrbit.pFloatLoc[2])
+        end if
+        put string(tempBonusChannel) & ":" & string(tempBonus.pState) & ":" & string(tempBonus.pValue) & ":" & string(tempBonus.pSprite.memberNum) & ":" & string(tempBonus.pSprite.rotation) & ":" & string(tempBonus.pRotationVel) & ":" & string(tempBonus.pSprite.loc[1]) & ":" & string(tempBonus.pSprite.loc[2]) & tempBonusOrbitData after tempBonuses
       end if
     end repeat
   end if
@@ -281,7 +307,7 @@ on referenceRecordState tempPhase
     put "bonus-change" after tempEvent
   end if
 
-  put string(gReferenceTraceSamples) & TAB & string(the ticks) & TAB & string(the frame) & TAB & string(the frameLabel) & TAB & tempPhase & TAB & string(tempGPSChannel) & TAB & string(tempState) & TAB & string(tempPointX) & TAB & string(tempPointY) & TAB & string(tempVelocityX) & TAB & string(tempVelocityY) & TAB & string(tempSpriteX) & TAB & string(tempSpriteY) & TAB & string(tempFrameCount) & TAB & string(tempTries) & TAB & string(tempDistance) & TAB & string(gScore) & TAB & string(gHighScore) & TAB & string(member("fld_level").word[2]) & TAB & string(gAlert) & TAB & string(tempStageInside) & TAB & string(tempFlightInside) & TAB & string(tempTargetContact) & TAB & tempInfluences & TAB & tempContacts & TAB & tempPlanets & TAB & tempBonuses & TAB & tempEvent
+  put string(gReferenceTraceSamples) & TAB & string(the ticks) & TAB & string(the frame) & TAB & string(the frameLabel) & TAB & tempPhase & TAB & string(tempGPSChannel) & TAB & string(tempState) & TAB & string(tempPointX) & TAB & string(tempPointY) & TAB & string(tempVelocityX) & TAB & string(tempVelocityY) & TAB & string(tempSpriteX) & TAB & string(tempSpriteY) & TAB & string(tempFrameCount) & TAB & string(tempTries) & TAB & string(tempDistance) & TAB & string(gScore) & TAB & string(gHighScore) & TAB & string(member("fld_level").word[2]) & TAB & string(gAlert) & TAB & string(tempStageInside) & TAB & string(tempFlightInside) & TAB & string(tempTargetContact) & TAB & string(tempTargetX) & TAB & string(tempTargetY) & TAB & tempInfluences & TAB & tempContacts & TAB & tempPlanets & TAB & tempBonuses & TAB & tempEvent
   gReferenceTraceSamples = gReferenceTraceSamples + 1
   gReferenceLastState = tempState
   gReferenceLastBonuses = tempBonuses

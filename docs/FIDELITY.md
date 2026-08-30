@@ -211,3 +211,91 @@ captured from the reference environment, never calculated by the port.
 - **Completeness:** every original frame label, level, cast member, link, and
   user-visible branch is represented in the inventory and exercised or marked
   unreachable with evidence.
+
+## Browser-port conformance result — 2026-08-30
+
+The implementation now consumes a Director-native export of all 64 Score
+frames: 2,108 sprite rows across 74 occupied channels and 114 referenced cast
+members. The web catalog contains 140 recovered member records. Eighteen vector
+members are deterministically converted from their original SWFs to SVG; all
+48 PNGs, 18 source SWFs, five WAVs, member text, Lingo, and bytecode remain
+traceable to the canonical DCR.
+
+The deterministic core agrees with 294 independently observed Director frame
+boundaries: 121 canonical level-1 samples, 31 bonus samples, 61 samples covering
+an orbiting target/planets/bonus, 31 multi-body-orbit samples, and two launch
+boundaries for each of the 25 levels. The focused traces include scoring, target
+entry, bonus collection and reset, crashes, the original list-index bounce
+quirk, moving targets, and simultaneous orbiters.
+
+Chromium pixel comparisons use exact 500 by 400 Stage captures from Director,
+not images produced by the port. With a 0.1 pixelmatch color threshold, the
+stable-screen differences are: Intro 67/200,000 pixels, Tips 5/200,000,
+End Stats 2/200,000 and High Score Sending 0/200,000. The High Score Form keeps
+the independently captured authored background outside the form-control region;
+that region is excluded from the pixel comparison because it is an explicitly
+approved UI change from First Name/State to one browser-native Nickname field.
+
+The retired HTTP high-score CGI is not called. A static site cannot safely
+reproduce its global ranking or POST side effect. A completed run therefore
+qualifies locally, asks only for a Nickname (an explicitly approved usability
+deviation), displays the sending screen, and returns to End Stats without
+networking. The recovered endpoint is retained only in the ignored source
+evidence and is never called by production code.
+
+### Browser interaction follow-up
+
+Dense browser pointer streams are coalesced to Director's latest mouse
+position at each 30 fps boundary. Button transitions remain ordered, so a
+release or Quit click cannot sit behind hundreds of obsolete move events. A
+browser regression exercises 360 move events in one drag and another performs
+eight consecutive 120-event attempts; both retain responsive release and Quit
+behavior. The persistent trail is accumulated on a transparent Canvas layer,
+matching Director's `bk_Drop` raster behavior without redrawing every historic
+segment each frame.
+
+Touch input uses the same deterministic pointer records and logical 500 by 400
+coordinates. The browser shell centers the uniformly scaled Stage in the
+visual viewport in both orientations, supplies a 48 CSS-pixel minimum tap area
+for authored buttons, and expands Kevin's initial touch target without changing
+the trajectory after a drag begins. A cancelled or interrupted touch returns a
+pullback to idle instead of launching or leaving the pointer captured. These
+are explicit mobile-accessibility treatments outside the Director simulation.
+
+Audio follows Director's channel-1 scoring lifecycle: target entry plays
+`snd_enterShip` once, each of the four animated operands starts one loop, and
+that loop stops on the exact frame its displayed value reaches the target.
+The Web Audio shell removes stopped and naturally ended sources, preventing
+short scoring samples from overlapping or surviving into the hold interval.
+If the player clicks to skip the Total Score animation, the channel stop event
+is carried across the same-frame transition into the next level instead of
+being cleared with the outgoing Score frame.
+
+Director ink 8 now propagates to every bitmap that Lingo can install into the
+authored sprite: both ship states and all 36 Kevin animation members receive a
+generated edge-connected transparent matte. The matte background is selected
+from the dominant perimeter color instead of assuming the top-left pixel is
+background; Kevin member 77 legitimately occupies that corner. Generated matte
+URLs include a content hash so a corrected frame cannot be hidden by a stale
+browser cache.
+
+The level renderer exposes the original `#message` alert and its authored OK
+action. Score inventory proves that the `Orbiting Notification` behavior is
+attached only to frame 14 (level 4), not globally to all gameplay frames. This
+prevents high-value bonuses on other levels from being mistaken for an orbit.
+The independent Director run `orbit-level04-pull40-up-20260830` reaches the
+warning at sample 179 with point `(250.3232, 333.4321)`, velocity
+`(7.5545, -1.8077)`, distance `1505.4932`, and an untouched 300-point bonus.
+
+The original message alert has only an OK button. OK calls `endDAlert` and
+resumes `#soaring`; doing nothing is the implicit Continue action, while a
+subsequent stage click sends `#tryAgain`. There is no countdown or hard flight
+limit in the soaring handler, so a stable orbit may continue indefinitely.
+
+Scoring renders the live `pScoreCurVal` for Distance, Level, Tries, and Score
+during their four original phases instead of showing completed operands early.
+At the user's explicit request, the per-level result is rounded to the nearest
+unit before it is animated and added to the total. This is an approved display
+and scoring deviation from Director, whose division could retain a fractional
+result. The five-attempt level-1 regression therefore resolves
+`318 x 1 / 5` to 64.

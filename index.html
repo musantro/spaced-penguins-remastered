@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>Spaced Penguin</title>
+  </head>
+  <body>
+    <main id="game-shell" aria-label="Spaced Penguin">
+      <div id="stage" role="application" aria-label="Spaced Penguin game stage" aria-describedby="touch-help">
+        <canvas id="game" width="500" height="400"></canvas>
+        <form id="high-score-form" hidden autocomplete="off" novalidate>
+          <label id="nickname-field">
+            <span>Nickname</span>
+            <input id="nickname" name="nickname" maxlength="20" required enterkeyhint="done" spellcheck="false" />
+          </label>
+          <button id="score-cancel" type="button" aria-label="Cancel score">Cancel</button>
+          <button id="score-submit" type="submit" aria-label="Submit score">Submit</button>
+        </form>
+      </div>
+      <p id="touch-help">On a touch screen, touch Kevin, drag backwards to aim, and release to launch.</p>
+      <p id="status" aria-live="polite">Loading original game assets…</p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

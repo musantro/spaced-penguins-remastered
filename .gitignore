@@ -12,6 +12,10 @@
 /coverage/
 /playwright-report/
 /test-results/
+/public/assets/original/
+/public/assets/generated/
+/public/assets/manifest.json
+/src/content/generated/
 *.log
 
 # Local tools, caches, and editor/OS metadata.

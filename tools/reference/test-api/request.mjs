@@ -77,16 +77,37 @@ export function createVerificationRequest({ id, levels, screens } = {}) {
   });
 }
 
+export function createScoreInventoryRequest({ id, firstFrame = 1, lastFrame = 64 } = {}) {
+  const targets = [];
+  for (let frame = Number(firstFrame); frame <= Number(lastFrame); frame += 1) {
+    targets.push({
+      id: `frame-${String(frame).padStart(2, "0")}`,
+      target: { kind: "frame", frame },
+      // Some authored frames immediately navigate elsewhere when playback
+      // begins (notably Load). The acknowledged pre-play frame is what the
+      // Score export records, so no post-play frame assertion belongs here.
+      expected: {},
+    });
+  }
+  return validateRequest({
+    schemaVersion: 1,
+    id: id || `score-${crypto.randomUUID()}`,
+    operation: "score",
+    targets,
+    capture: { frames: 0, screenshotFrames: [0] },
+  });
+}
+
 export function validateRequest(value) {
   if (!value || typeof value !== "object" || Array.isArray(value)) fail("La petición debe ser un objeto JSON.");
   if (value.schemaVersion !== 1) fail("schemaVersion debe ser 1.");
   if (!/^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$/.test(value.id ?? "")) {
     fail("id debe contener solo letras, números, punto, guion o guion bajo (máximo 120)." );
   }
-  if (!new Set(["physics", "state", "verify-all"]).has(value.operation)) {
-    fail("operation debe ser physics, state o verify-all.");
+  if (!new Set(["physics", "state", "verify-all", "score"]).has(value.operation)) {
+    fail("operation debe ser physics, state, verify-all o score.");
   }
-  if (value.operation === "verify-all") validateVerificationTargets(value.targets);
+  if (value.operation === "verify-all" || value.operation === "score") validateVerificationTargets(value.targets);
   else validateTarget(value.target);
 
   const frames = value.capture?.frames;

@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   createPhysicsRequest,
+  createScoreInventoryRequest,
   createStateRequest,
   createVerificationRequest,
   listAssets,
@@ -26,6 +27,13 @@ try {
     result = listScreens(projectRoot);
   } else if (command === "levels") {
     result = listLevels();
+  } else if (command === "score") {
+    const request = createScoreInventoryRequest({
+      id: options.id,
+      firstFrame: integer(options.first, 1),
+      lastFrame: integer(options.last, 64),
+    });
+    result = options.run ? runReferenceRequest(request, { timeoutSeconds: integer(options.timeout, 900) }) : request;
   } else if (command === "verify-all") {
     const levelCatalog = listLevels().levels;
     const screenCatalog = listScreens(projectRoot).screens;
@@ -148,6 +156,7 @@ function printHelp() {
     `  assets [--cast Internal] [--type bitmap] [--name ship]\n` +
     `  screens\n` +
     `  levels\n` +
+    `  score [--first 1] [--last 64] [--run]\n` +
     `  verify-all [--levels 1,2] [--screens Intro,Tips|none] [--run]\n` +
     `  physics --level 1 --distance 100 --angle -137 --frames 120 [--run]\n` +
     `  physics --level 1 --vx -20 --vy -18 --frames 120 [--run]\n` +

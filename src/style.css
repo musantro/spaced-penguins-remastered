@@ -1,0 +1,19 @@
+:root { color-scheme: dark; background: #050505; font-family: Arial, sans-serif; }
+* { box-sizing: border-box; }
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #050505; }
+body { overscroll-behavior: none; }
+#game-shell { position: fixed; inset: 0; width: 100%; height: 100%; height: 100dvh; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 500px; height: 400px; transform: translate(-50%, -50%); transform-origin: center; touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; background: #000; overflow: hidden; }
+#game { display: block; width: 500px; height: 400px; image-rendering: auto; cursor: default; }
+#status, #touch-help { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+#high-score-form { position: absolute; inset: 0; pointer-events: none; }
+#high-score-form label { position: absolute; margin: 0; }
+#high-score-form label span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+#nickname-field { left: 210px; top: 157px; width: 170px; height: 34px; }
+#high-score-form input { pointer-events: auto; touch-action: manipulation; user-select: text; width: 100%; height: 100%; border: 2px solid #111; border-radius: 0; background: #fff; color: #000; font: 18px Arial, sans-serif; padding: 2px 4px; outline: none; }
+#high-score-form input:focus { border-color: #ff6600; box-shadow: 0 0 0 2px #ffffcc; }
+#high-score-form button { position: absolute; pointer-events: auto; touch-action: manipulation; appearance: none; border: 0; padding: 0; background: transparent; color: transparent; cursor: pointer; }
+#high-score-form button:focus-visible { outline: 3px solid #fff; outline-offset: -5px; }
+#score-cancel { left: 37px; top: 337px; width: 82px; height: 32px; }
+#score-submit { left: 294px; top: 327px; width: 173px; height: 47px; }
+#high-score-form[hidden] { display: none; }

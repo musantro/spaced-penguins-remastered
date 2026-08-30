@@ -1,12 +1,9 @@
 # Spaced Penguins Remastered
 
-A faithful browser port of Big Idea's 2002 Macromedia Director game *Spaced
-Penguin*.
-
-The project is currently in its preservation and verification phase. Original
-art, sound, text, Lingo, bytecode, and member metadata can already be recovered
-reproducibly; production gameplay work begins after the original runtime oracle
-can emit an authoritative trajectory trace.
+A faithful, static browser port of Big Idea's 2002 Macromedia Director game
+*Spaced Penguin*. The production build is framework-free HTML, CSS, Canvas 2D,
+Web Audio, and JavaScript compiled from vanilla TypeScript. It contains all 25
+authored levels and uses the original art, text, and sound.
 
 Start with:
 
@@ -14,7 +11,40 @@ Start with:
 - `docs/FIDELITY.md` for the verification contract;
 - `docs/ARCHITECTURE.md` for the target browser design;
 - `docs/TESTING_API.md` for the isolated Director testing API;
+- `docs/EXTRACTION_REPORT.md` for the extracted content and port evidence;
 - `reference/originals/README.md` for provenance and checksums.
+
+## Run the browser port
+
+After the reference material has been prepared once, generate the ignored web
+assets and start Vite:
+
+```text
+pnpm install
+pnpm assets:generate
+pnpm dev
+```
+
+Open the URL printed by Vite. The stage always simulates at 500 by 400 logical
+pixels and 30 frames per second, then scales uniformly to the window. A static
+release is written to `dist/` with:
+
+```text
+pnpm build
+```
+
+No application server is required for the release. To run the deterministic
+state tests, Director-reference API tests, and browser/pixel tests:
+
+```text
+pnpm test:web
+pnpm test
+pnpm test:e2e
+```
+
+The original Big Idea high-score CGI no longer forms part of the static build.
+Completing the game opens the locally adapted single-Nickname score form and
+keeps the sending transition, but does not transmit personal data.
 
 ## Set up a fresh clone
 

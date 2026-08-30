@@ -15,3 +15,7 @@ raw and normalized traces, and all 39 Stage PNGs. Individual physics and state
 replay baselines retain their own request and trace hashes. These files live in
 the ignored `reference/test-api/runs/` directory, keeping vintage runtime
 output and working movies out of Git while retaining reproducible provenance.
+
+`web-port-baseline-20260830.json` identifies the complete Score export, focused
+Director conformance traces, extracted web-asset counts, golden Stage images,
+and accepted pixel differences used by the static browser port.

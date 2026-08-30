@@ -489,6 +489,49 @@ function Set-DirectorTarget {
     }
 }
 
+function Invoke-ScoreInventory {
+    param(
+        [Parameter(Mandatory = $true)][Diagnostics.Process]$Process,
+        [Parameter(Mandatory = $true)][object]$Request
+    )
+    $entries = New-Object 'System.Collections.Generic.List[object]'
+    foreach ($entry in @($Request.targets)) {
+        $exported = $false
+        for ($attempt = 1; $attempt -le 3 -and -not $exported; $attempt++) {
+            if (Test-Path -LiteralPath $commandReadyPath) { Remove-Item -LiteralPath $commandReadyPath -Force }
+            $scoreFileName = "score-$($entry.id).tsv"
+            $scorePath = Join-Path $runPath $scoreFileName
+            if (Test-Path -LiteralPath $scorePath) { Remove-Item -LiteralPath $scorePath -Force }
+            Send-DirectorCommand -Process $Process -Command "go 1"
+            Send-DirectorCommand -Process $Process -Command "prepareMovie()"
+            Set-DirectorTarget -Process $Process -Target $entry.target
+            Send-DirectorCommand -Process $Process -Command ('referenceConfirmTarget("' + $entry.id + '")')
+            $readyDeadline = [DateTime]::UtcNow.AddSeconds(3)
+            while (-not (Test-Path -LiteralPath $commandReadyPath) -and [DateTime]::UtcNow -lt $readyDeadline) {
+                Start-Sleep -Milliseconds 50
+            }
+            if (-not (Test-Path -LiteralPath $commandReadyPath)) { continue }
+            $readyLine = ((Get-Content -Raw -LiteralPath $commandReadyPath).Trim() -replace '^--\s*"', '') -replace '"$', ''
+            $readyFields = $readyLine -split "`t"
+            if ($readyFields[0] -ne [string]$entry.id) { continue }
+            Send-DirectorCommand -Process $Process -Command ('referenceExportScoreFrame("' + $entry.id + '")')
+            $scoreDeadline = [DateTime]::UtcNow.AddSeconds(3)
+            while (-not (Test-Path -LiteralPath $scorePath) -and [DateTime]::UtcNow -lt $scoreDeadline) {
+                Start-Sleep -Milliseconds 50
+            }
+            $exported = Test-Path -LiteralPath $scorePath
+        }
+        if (-not $exported) { throw "Director did not export Score target $($entry.id) after three attempts." }
+        $entries.Add([PSCustomObject]@{
+            id = [string]$entry.id
+            score = $scoreFileName
+            acknowledgedFrame = [int]$readyFields[1]
+            acknowledgedFrameLabel = [string]$readyFields[2]
+        })
+    }
+    return $entries
+}
+
 function Invoke-VerificationMatrix {
     param(
         [Parameter(Mandatory = $true)][Diagnostics.Process]$Process,
@@ -540,6 +583,14 @@ function Invoke-VerificationMatrix {
             $readyFields = $readyLine -split "`t"
             $acknowledgedFrame = [int]$readyFields[1]
             $acknowledgedFrameLabel = [string]$readyFields[2]
+            $scoreFileName = "score-$($verification.id).tsv"
+            Send-DirectorCommand -Process $Process -Command ('referenceExportScoreFrame("' + $verification.id + '")')
+            $scoreDeadline = [DateTime]::UtcNow.AddSeconds(3)
+            $scorePath = Join-Path $runPath $scoreFileName
+            while (-not (Test-Path -LiteralPath $scorePath) -and [DateTime]::UtcNow -lt $scoreDeadline) {
+                Start-Sleep -Milliseconds 50
+            }
+            if (-not (Test-Path -LiteralPath $scorePath)) { continue }
             if ($verification.target.kind -eq "screen") {
                 $entryScreenshotName = "stage-entry-$($verification.id).png"
                 Save-StageScreenshot -Process $Process -Menu $Menu -Path (Join-Path $runPath $entryScreenshotName)
@@ -581,6 +632,7 @@ function Invoke-VerificationMatrix {
             acknowledgedFrameLabel = $acknowledgedFrameLabel
             requestedSample = $requestedSample
             observedSample = $observedSample
+            score = $scoreFileName
         })
 
         [DirectorTestApiNativeMethods]::SetForegroundWindow($Process.MainWindowHandle) | Out-Null
@@ -680,6 +732,21 @@ try {
             instrumentation = "reference-trace-v2"
             movieLabels = "movie-labels.txt"
             verificationEntries = $verificationEntries
+            workingMovie = "working.dir"
+        })
+        return
+    }
+    if ($request.operation -eq "score") {
+        $scoreEntries = Invoke-ScoreInventory -Process $director -Request $request
+        Write-AtomicResult -Value ([PSCustomObject]@{
+            schemaVersion = 1
+            status = "completed"
+            requestId = $request.id
+            operation = "score"
+            source = "Macromedia Director 8 Trial in disconnected Windows Sandbox"
+            instrumentation = "reference-trace-v2"
+            movieLabels = "movie-labels.txt"
+            scoreEntries = $scoreEntries
             workingMovie = "working.dir"
         })
         return
