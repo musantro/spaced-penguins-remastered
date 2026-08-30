@@ -4,6 +4,7 @@
 /reference/derived/
 /reference/captures/
 /reference/authoring/
+/reference/test-api/runs/
 
 # JavaScript tooling and generated output.
 /node_modules/

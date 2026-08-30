@@ -28,8 +28,7 @@ counts without running vintage game code on the host.
 
 ## Phase 1 — Reference oracle
 
-Status: black-box and native-debug baselines operational; structured level-1
-state trace still pending.
+Status: black-box, native-debug, and structured testing baselines operational.
 
 - [x] Enable the isolated Windows reference environment.
 - [x] Verify the original projector starts, renders, and accepts input.
@@ -37,12 +36,13 @@ state trace still pending.
   fps.
 - [x] Record a timed level-1 launch through target entry and scoring.
 - [ ] Verify sound capture and event timing.
-- Capture a complete playthrough and every non-gameplay screen.
+- Capture a complete playthrough.
+- [x] Position, execute, and capture every non-gameplay frame label.
 - Obtain a compatible Director authoring environment in the VM and run the
   reconstructed DIR.
 - [x] Capture an automated Director-native Lingo trace for handler, statement,
   and evaluated-value ordering.
-- Add non-invasive structured state logging and validate its output against
+- [x] Add non-invasive structured state logging and validate its output against
   the untouched projector's observable checkpoints.
 - Record the characterization scenarios in `docs/FIDELITY.md`.
 
@@ -102,8 +102,9 @@ remaining deviations, if any, are explicit and approved.
 ## Immediate next gate
 
 Do not begin broad game implementation yet. The visual oracle, Director 8
-authoring environment, native execution logging, and debugger command channel
-are operational. The next gate is the structured trace containing frame
-number, `pPoint`, `pVX`, `pVY`, state, collision results, and score for the
-tracked level-1 scenario. This prevents the project from accumulating
-plausible but unverified compatibility assumptions.
+authoring environment, native execution logging, debugger command channel, and
+structured testing API are operational. The next gate is a focused
+characterization matrix for edge collisions, moving planets, bonuses, scoring,
+and sound, accompanied by stable golden traces and selected Stage captures.
+This prevents the project from accumulating plausible but unverified
+compatibility assumptions.

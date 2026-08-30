@@ -497,7 +497,7 @@ try {
     if (-not (Test-Path -LiteralPath $readyPath)) {
         throw "Director did not compile or execute the reference instrumentation."
     }
-    if ((Get-Content -Raw -LiteralPath $readyPath) -notmatch "reference-trace-v1") {
+    if ((Get-Content -Raw -LiteralPath $readyPath) -notmatch "reference-trace-v2") {
         throw "Director wrote an unexpected instrumentation probe value."
     }
 
@@ -555,7 +555,7 @@ try {
         directorWindowTitle = $director.MainWindowTitle
         directorExecutable = $directorPath
         workingDir = [IO.Path]::GetFileName($workingDirPath)
-        instrumentation = "reference-trace-v1"
+        instrumentation = "reference-trace-v2"
         nativeTraceControl = @(
             "referenceArmNativeTrace()"
             "referenceEnableNativeTrace()"

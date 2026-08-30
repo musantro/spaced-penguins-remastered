@@ -13,6 +13,7 @@ Start with:
 - `docs/PORTING_PLAN.md` for milestones;
 - `docs/FIDELITY.md` for the verification contract;
 - `docs/ARCHITECTURE.md` for the target browser design;
+- `docs/TESTING_API.md` for the isolated Director testing API;
 - `reference/originals/README.md` for provenance and checksums.
 
 ## Set up a fresh clone
@@ -81,3 +82,23 @@ again. The cache is writable only while it is first prepared and is mapped
 read-only on later runs. Windows Sandbox itself remains disposable, with
 networking and host clipboard access disabled. Delete the local cache only
 when an intentional clean reinstall is required.
+
+## Query the Director reference runtime
+
+The testing API runs Director only inside the disconnected Windows Sandbox and
+returns normalized JSON. It can inventory assets, screens, and levels; launch
+Kevin from polar or vector input; capture per-frame trajectories and events;
+and restore a prior gameplay snapshot.
+
+```text
+pnpm reference:assets -- --name ship
+pnpm reference:screens
+pnpm reference:levels
+pnpm reference:verify-all
+pnpm reference:physics -- --level 1 --distance 100 --angle -148.36 --frames 120
+pnpm reference:state -- --level 1 --snapshot reference/test-api/runs/<run>/trace.json --frames 30
+```
+
+Run directories and screenshots are local evidence under the ignored
+`reference/test-api/runs/` tree. See `docs/TESTING_API.md` for the request and
+trace schemas, capture ordering, and safety boundary.

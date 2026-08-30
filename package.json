@@ -8,6 +8,7 @@
   },
   "packageManager": "pnpm@10.10.0",
   "scripts": {
+    "test": "node --test tools/reference/test-api/test/*.test.mjs",
     "setup:environment": "powershell -NoProfile -ExecutionPolicy Bypass -File setup-environment.ps1",
     "reference:fetch": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/fetch-originals.ps1",
     "reference:decompile": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/decompile-originals.ps1",
@@ -18,7 +19,14 @@
     "reference:capture": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/start-sandbox-capture.ps1",
     "reference:fetch-authoring": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/fetch-authoring-tools.ps1",
     "reference:authoring-sandbox": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/create-authoring-sandbox-config.ps1",
-    "reference:authoring": "pnpm reference:fetch-authoring && powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/start-authoring-sandbox.ps1"
+    "reference:authoring": "pnpm reference:fetch-authoring && powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/start-authoring-sandbox.ps1",
+    "reference:test-api": "node tools/reference/test-api/cli.mjs",
+    "reference:assets": "node tools/reference/test-api/cli.mjs assets",
+    "reference:screens": "node tools/reference/test-api/cli.mjs screens",
+    "reference:levels": "node tools/reference/test-api/cli.mjs levels",
+    "reference:verify-all": "node tools/reference/test-api/cli.mjs verify-all --run",
+    "reference:physics": "node tools/reference/test-api/cli.mjs physics --run",
+    "reference:state": "node tools/reference/test-api/cli.mjs state --run"
   },
   "devDependencies": {
     "projectorrays": "1.1.1"

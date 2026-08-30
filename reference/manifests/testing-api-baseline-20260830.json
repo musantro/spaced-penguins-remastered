@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "kind": "director-8-structured-testing-api",
+  "capturedAtLocalDate": "2026-08-30",
+  "environment": {
+    "isolation": "Windows Sandbox",
+    "networking": false,
+    "clipboardRedirection": false,
+    "protectedClient": true,
+    "authoringTool": "Macromedia Director 8 Trial",
+    "trialInstallerSha256": "9fffc9c721a59a27d5b444aab0f967215f70f51cdbe23ab9c0df845c6efd4d56"
+  },
+  "canonicalProgram": {
+    "dcrSha256": "22d7a9f9455467c277a0ea920cf1042073f7744446aaecb40476f586941df102",
+    "reconstructedDirSha256": "a655723a84fcc6e575c6da4371fff0aeb0bdee2ba2c40c4d6c0a9a54cfaf99d8"
+  },
+  "implementation": {
+    "instrumentation": {
+      "path": "reference/instrumentation/reference_trace.ls",
+      "bytes": 17356,
+      "sha256": "2126522807cd7a52af1bcd76f172a7e88daa335b678d8824b71cc989136256ab",
+      "marker": "reference-trace-v2"
+    },
+    "guestRunner": {
+      "path": "tools/reference/sandbox/run-director-test-api.ps1",
+      "bytes": 42414,
+      "sha256": "a531c66d3c674acf1c0f2fc1e4fe4f52d8f386e6c7de13c3bd385f5d6cc4069e"
+    },
+    "hostLifecycle": {
+      "path": "tools/reference/start-test-api-sandbox.ps1",
+      "bytes": 9317,
+      "sha256": "b0dc660aec62b1e5d89499a9fd6cf9ef157deb775966d9f4c081e94d64bddd95"
+    },
+    "catalog": {
+      "path": "tools/reference/test-api/catalog.mjs",
+      "bytes": 6357,
+      "sha256": "369208886972822a8508e67c36561d5646265aaddf7eee99252fe79fdaa94a25"
+    },
+    "requestBuilder": {
+      "path": "tools/reference/test-api/request.mjs",
+      "bytes": 7519,
+      "sha256": "90940c1fa5496cdcf784ad5ad5136726bcc9cc9faeb1e0f95c3d59ff09fdc802"
+    },
+    "orchestrator": {
+      "path": "tools/reference/test-api/index.mjs",
+      "bytes": 7722,
+      "sha256": "d78b8ea4b0066cfc8ff32065eba435676067f4f715db0ae5b6b90862c6906027"
+    },
+    "normalizer": {
+      "path": "tools/reference/test-api/trace.mjs",
+      "bytes": 5434,
+      "sha256": "d76c5a350d54324eef5d9fe639dbba17e27380bbee3d1ab48efa2da7ffad9a63"
+    }
+  },
+  "completeMatrixRun": {
+    "runId": "all-levels-physics-and-screens-20260830-v2",
+    "request": {
+      "bytes": 6928,
+      "sha256": "c4ccab51e32fa61eb316d3d9a127da845e32bb0fb7bfa48d2af2e8c4f0aa6774"
+    },
+    "verification": {
+      "bytes": 43212,
+      "sha256": "d957563f14a57b020c51142ede58161b75590d48d870e110080e75123409a1e9"
+    },
+    "movieLabels": {
+      "bytes": 64,
+      "sha256": "65cdfabeaa1f2911abb0f8b8745cde157ca3260a586d0218e684c5bcdc0d4058"
+    },
+    "sourceCount": {
+      "bytes": 10,
+      "sha256": "07221e2823eee91e2e2cbe761890689abe7ffdd664f81402f25c2ecac5a66ffc",
+      "characters": 17356
+    },
+    "captureSet": {
+      "algorithm": "sha256-lines-v1",
+      "sha256": "37b040cdf7ff10afbee064fdd1288bca661307b88f03504a93f81a4e967fbe28",
+      "includedFileCount": 107,
+      "rawTraceCount": 32,
+      "normalizedTraceCount": 32,
+      "stagePngCount": 39
+    },
+    "observations": {
+      "targets": 32,
+      "passed": 32,
+      "failed": 0,
+      "playableLevels": 25,
+      "levelFrames": {
+        "first": 11,
+        "last": 35
+      },
+      "levelLaunch": {
+        "distance": 100,
+        "angleDegrees": -137,
+        "samplesPerLevel": 2
+      },
+      "logicalLevelsObserved": {
+        "first": 1,
+        "last": 25
+      },
+      "planetInstancesObserved": 78,
+      "bonusInstancesObserved": 129,
+      "stageDimensions": {
+        "width": 500,
+        "height": 400
+      },
+      "stageSurfaceUnoccluded": true,
+      "screens": {
+        "Load": "Intro",
+        "Intro": "Intro",
+        "Tips": "Tips",
+        "Levels": "Levels",
+        "HS FM": "HS FM",
+        "End_Stats": "End_Stats",
+        "HS_Sending": "HS_Sending"
+      }
+    }
+  },
+  "canonicalPhysicsRun": {
+    "runId": "canonical-api-current-v2",
+    "request": {
+      "bytes": 276,
+      "sha256": "f6bfe4c2a3929286addf96ad9e2dc4e199979a411275e92f09e127da7efdbc25"
+    },
+    "rawTrace": {
+      "bytes": 20882,
+      "sha256": "1cc9c8126e175e4118b459492387cedc8186ae555a45f58978405ed629fe4608"
+    },
+    "normalizedTrace": {
+      "bytes": 127195,
+      "sha256": "368dfcf1e8ccd2ae763166ac11d27c2bdcb6b4d1ab216b55ec2b6e4a988e1370"
+    },
+    "sourceCountSha256": "07221e2823eee91e2e2cbe761890689abe7ffdd664f81402f25c2ecac5a66ffc",
+    "observations": {
+      "sampleCount": 121,
+      "launch": {
+        "level": 1,
+        "distance": 100,
+        "angleDegrees": -148.36
+      },
+      "gpsChannel": 36,
+      "snappingToSoaringSample": 4,
+      "targetCollisionSample": 12,
+      "scoringSample": 43,
+      "nativeDistance": 317.728,
+      "displayedDistance": 318,
+      "highScoreAtSample120": 318
+    }
+  },
+  "snapshotSourceRun": {
+    "runId": "snapshot-source-current-v2",
+    "requestSha256": "67d93ee3c653ed6b6c6ba2c5be53260b9979313ad10d0869bd06536ce099f598",
+    "rawTraceSha256": "0ebb2937fa2e9adc0d1146a07514920e0a068506a5f4e1f653e6a4ec0ab6dd86",
+    "normalizedTraceSha256": "a9db36b4d3904300236cd55ce8594a06858a2676f016fdb6133a2b9c2d7036e1",
+    "snapshotState": "snapping",
+    "sampleCount": 4
+  },
+  "snapshotReplayRun": {
+    "runId": "snapshot-replay-current-v2",
+    "requestSha256": "9448c3e2c53ee9efd8f3e34b1e0fc904ec0b1b8be6a434c11449bacaac04b5fc",
+    "rawTraceSha256": "84f3c5a7652822d11c116490214bcf7593fc4e6f97608b2555875ca9d574bb19",
+    "normalizedTraceSha256": "6d350086acddee90381847a7a385070b72db73efb425f6d04ff970d9b51e269e",
+    "sampleCount": 3,
+    "restoredFieldsExactAtSampleZero": [
+      "movieFrame",
+      "level",
+      "state",
+      "pointX",
+      "pointY",
+      "velocityX",
+      "velocityY",
+      "stateFrameCount",
+      "tries",
+      "distance"
+    ],
+    "nextState": "soaring"
+  },
+  "lifecycle": {
+    "resultPublication": "atomic pending-file rename",
+    "normalCloseRequested": true,
+    "confirmationDialogsHandled": true,
+    "feedbackDialogDeclined": true,
+    "forceStopPolicy": "headless residual process only",
+    "startupRetryCount": 3,
+    "sandboxProcessPresentAfterAcceptedRuns": false
+  },
+  "notes": [
+    "Run payloads, working DIR files, traces, and PNG captures remain under the ignored reference/test-api/runs directory.",
+    "Director confirmed 25 playable GPS levels on frames 11 through 35. Frames 36 through 49 execute the loop script but contain no GPS gameplay instance.",
+    "Every matrix target resets the movie to frame 1 and runs prepareMovie before applying its target, preventing state leakage between levels and screens.",
+    "Before every PNG, the harness raises the Stage container and rejects the capture if a visible sibling authoring window overlaps its 500 by 400 surface.",
+    "The movie-script prepareFrame observer runs after GPS.prepareFrame. Game_Looping go(the frame) prevents the later movie-script exitFrame observer from running; this ordering is independently visible in the native Lingo trace identified by the 20260829 authoring baseline.",
+    "The 318 result agrees with the unmodified projector black-box baseline; trace values come only from Director 8."
+  ]
+}

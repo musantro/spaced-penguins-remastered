@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spaced-penguins-remastered.local/reference-request.schema.json",
+  "title": "Spaced Penguin Director reference request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "operation", "capture"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$" },
+    "operation": { "enum": ["physics", "state", "verify-all"] },
+    "target": { "$ref": "#/$defs/target" },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "items": { "$ref": "#/$defs/verificationTarget" }
+    },
+    "launch": { "$ref": "#/$defs/launch" },
+    "capture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frames", "screenshotFrames"],
+      "properties": {
+        "frames": { "type": "integer", "minimum": 0, "maximum": 10000 },
+        "screenshotFrames": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "initialState": { "$ref": "#/$defs/snapshot" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "operation": { "const": "physics" } } },
+      "then": { "required": ["target", "launch"] }
+    },
+    {
+      "if": { "properties": { "operation": { "const": "state" } } },
+      "then": { "required": ["target"] }
+    },
+    {
+      "if": { "properties": { "operation": { "const": "verify-all" } } },
+      "then": { "required": ["targets"] }
+    }
+  ],
+  "$defs": {
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" }
+      }
+    },
+    "target": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "level"],
+          "properties": {
+            "kind": { "const": "level" },
+            "level": { "type": "integer", "minimum": 1, "maximum": 25 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "label"],
+          "properties": {
+            "kind": { "const": "screen" },
+            "label": { "type": "string", "minLength": 1, "maxLength": 100 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "frame"],
+          "properties": {
+            "kind": { "const": "frame" },
+            "frame": { "type": "integer", "minimum": 1 }
+          }
+        }
+      ]
+    },
+    "verificationTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "target", "expected"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,119}$" },
+        "target": { "$ref": "#/$defs/target" },
+        "expected": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "movieFrame": { "type": "integer", "minimum": 1 },
+            "entryFrameLabel": { "type": "string" },
+            "frameLabel": { "type": "string" },
+            "level": { "type": "integer", "minimum": 1, "maximum": 25 },
+            "physics": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "launch": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["distance", "angleDegrees"],
+          "properties": {
+            "distance": { "type": "number", "minimum": 10, "maximum": 120 },
+            "angleDegrees": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["vector"],
+          "properties": {
+            "vector": { "$ref": "#/$defs/point" }
+          }
+        }
+      ]
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["movieFrame", "game"],
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "movieFrame": { "type": "integer", "minimum": 1 },
+        "frameLabel": { "type": ["string", "null"] },
+        "game": { "type": "object" },
+        "gps": { "type": ["object", "null"] },
+        "planets": { "type": "array" },
+        "bonuses": { "type": "array" }
+      }
+    }
+  }
+}

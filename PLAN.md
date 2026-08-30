@@ -13,13 +13,18 @@ no ha comenzado. Ya disponemos de:
 - Director 8 ejecutando la película reconstruida dentro de Windows Sandbox;
 - trazas nativas de handlers, sentencias y valores calculados por Lingo;
 - acceso automatizable a los comandos del depurador de Director;
+- una API estructurada que inventaría assets, pantallas y niveles, lanza por
+  distancia/ángulo o vector, devuelve trayectoria, colisiones y gadgets, y
+  restaura snapshots dentro de Windows Sandbox;
+- una matriz ejecutada en Director que confirma los 25 niveles jugables y las
+  siete pantallas, con lanzamiento y captura 500×400 por nivel;
 - una arquitectura objetivo basada en TypeScript, Canvas 2D, Web Audio, Vite,
   Vitest y Playwright.
 
 La secuencia crítica restante es:
 
 ```text
-traza estructurada del nivel 1
+matriz de caracterización y audio
 → inventario completo
 → runtime determinista
 → nivel 1 verificado
@@ -30,20 +35,20 @@ traza estructurada del nivel 1
 
 ## 1. Cerrar el oráculo de referencia
 
-Este es el siguiente paso inmediato y el último bloqueo antes de programar el
-port.
+Este laboratorio ya está operativo; quedan por ampliar sus escenarios antes de
+programar el port.
 
-1. Crear un comando específico, por ejemplo `pnpm reference:trajectory`.
-2. Abrir automáticamente la película instrumentada en Director 8 dentro del
+1. [x] Crear comandos específicos `reference:physics` y `reference:state`.
+2. [x] Abrir automáticamente la película instrumentada en Director 8 dentro del
    Sandbox.
-3. Localizar estructuralmente el área exacta de 500 por 400 del Stage, sin
+3. [x] Localizar estructuralmente el área exacta de 500 por 400 del Stage, sin
    depender de capturas de pantalla.
-4. Reproducir exactamente el escenario conocido:
+4. [x] Reproducir exactamente el escenario conocido:
    - pulsar Start;
    - arrastrar a Kevin de `(413, 303)` a `(469, 355)`;
    - respetar los tiempos de pulsación y liberación;
    - ejecutar unos 120 fotogramas a 30 fps.
-5. Registrar sin pausas, fotograma por fotograma:
+5. [x] Registrar sin pausas, fotograma por fotograma:
    - estado del juego;
    - `pPoint`;
    - `pVX` y `pVY`;
@@ -54,8 +59,8 @@ port.
    - distancia;
    - puntuación;
    - alertas y transiciones.
-6. Normalizar la salida de Director a JSON o TSV estable.
-7. Comparar esa traza con el proyector sin modificar:
+6. [x] Normalizar la salida de Director a JSON estable.
+7. [x] Comparar esa traza con el proyector sin modificar:
    - llegada a la nave en el mismo fotograma;
    - distancia final 318;
    - puntuación 318;

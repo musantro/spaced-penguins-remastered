@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spaced-penguins-remastered.local/reference-trace.schema.json",
+  "title": "Spaced Penguin normalized Director trace",
+  "type": "object",
+  "required": ["schemaVersion", "source", "sampleCount", "samples", "events", "snapshot"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "source": { "type": "string" },
+    "sampleCount": { "type": "integer", "minimum": 1 },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "sample", "movieFrame", "phase", "state", "pointX", "pointY",
+          "velocityX", "velocityY", "planetInfluences", "planetContacts",
+          "planets", "bonuses"
+        ]
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sample", "type"],
+        "properties": {
+          "sample": { "type": "integer", "minimum": 0 },
+          "type": { "enum": ["state", "planet-collision", "target-collision", "bonus-collected"] }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "required": ["schemaVersion", "movieFrame", "game", "gps", "planets", "bonuses"]
+    }
+  }
+}

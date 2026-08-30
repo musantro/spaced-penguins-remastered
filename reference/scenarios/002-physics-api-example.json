@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "physics-level-01-example",
+  "operation": "physics",
+  "target": {
+    "kind": "level",
+    "level": 1
+  },
+  "launch": {
+    "distance": 100,
+    "angleDegrees": -137
+  },
+  "capture": {
+    "frames": 120,
+    "screenshotFrames": []
+  }
+}

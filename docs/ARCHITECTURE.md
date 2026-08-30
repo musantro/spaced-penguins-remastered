@@ -26,6 +26,35 @@ The core exposes `tick(input): FrameSnapshot`. Tests can advance it without a
 browser or wall clock. The browser loop accumulates elapsed time and calls the
 same fixed-step function; it never feeds variable delta time into game physics.
 
+## Reference testing boundary
+
+`tools/reference/test-api/` is a development oracle, not production runtime
+code. Its host CLI validates requests and inventories extracted data. Dynamic
+requests create a disposable Windows Sandbox with networking, clipboard, and
+input-device redirection disabled; original files and the Director cache are
+mounted read-only, while one ignored run directory is the only writable host
+mapping.
+
+Inside the guest, the harness copies the reconstructed DIR, injects the tracked
+observer, drives the original GPS behavior, and emits raw Director values. The
+host normalizer turns those observations into the same frame-oriented contract
+that the future `core` will implement. Snapshots are explicit data: restoring
+one never consults browser time and can be followed by either continued
+simulation or a new launch.
+
+This separation keeps conformance expectations independent from the port. The
+reference API may observe or control Director, but production code must not
+import it or use it to calculate expected results at test time.
+
+Matrix verification reuses one disposable Sandbox while resetting Director's
+movie state before each target. The guest publishes its terminal JSON by
+atomic rename. Only then does the host request a normal window close and accept
+the discard confirmation; it never kills an active remote-desktop connection.
+Director Message commands are considered committed only after a guest-written
+acknowledgement proves the source length or target configuration.
+Stage captures raise the Stage's native container above Director's other child
+windows and fail if any visible sibling still overlaps its 500 by 400 surface.
+
 ## Fidelity-oriented rules
 
 - Preserve original logical coordinates and registration points.

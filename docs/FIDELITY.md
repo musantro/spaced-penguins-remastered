@@ -136,6 +136,49 @@ The authoring harness no longer creates screenshots. Images remain part of the
 separate black-box pixel-conformance workflow, not the source of physics or
 event-order expectations.
 
+### Structured testing API baseline established
+
+`pnpm reference:physics` now accepts a level plus either sling distance and
+angle or a velocity vector, executes the reconstructed movie in the isolated
+Director 8 Sandbox, and returns one normalized sample per observed
+`prepareFrame`. Each sample includes GPS state, point and velocity, sprite
+position, attempts, distance, score, target contact, planet influence and contact
+state, orbit state, and bonus state. Derived events identify state changes,
+planet and target collisions, and collected gadgets without replacing
+Director's calculations.
+
+The canonical 120-frame request for level 1 reproduced the established
+black-box checkpoint: Kevin entered the target, reached the scoring state, and
+Director reported distance 318. A separate Stage request captured the exact
+500 by 400 `ImlWinCls` surface. Requests may also restore an earlier serialized
+snapshot atomically before advancing or relaunching, so a collision or screen
+state can be replayed without depending on manual timing.
+
+The API implementation, schemas, safe Sandbox mappings, and examples live in
+`tools/reference/test-api/`, `reference/test-api/schemas/`, and
+`docs/TESTING_API.md`. Captured outputs remain ignored; a tracked manifest
+records the request and evidence hashes used for the baseline.
+
+The complete target matrix has also been executed inside one disposable
+Sandbox. Director confirmed 25 playable GPS levels on frames 11–35, not the 39
+previously inferred from the broader `Game_Looping` range. Every level accepted
+a real sling launch, produced two physics samples with a valid velocity and the
+correct logical level, and yielded an exact 500 by 400 Stage capture. All seven
+movie labels were positioned and executed; six remain on their marker while
+the transient `Load` marker advances to `Intro`. Entry and post-execution Stage
+captures exist for every label. The accepted run passed 32 of 32 targets.
+Before every PNG the harness raises Director's native Stage container and
+rejects the capture if another authoring child overlaps the 500 by 400 surface;
+this prevents a dimensionally valid image of Score or Cast from being accepted.
+
+Reference injection and target selection now use Director-authored
+acknowledgement files. The harness checks the exact Lingo source character
+count before compilation and checks target, frame, label, and configuration
+before Play, avoiding silent Message-window paste loss. Result publication is
+atomic. The host closes the Sandbox through its confirmation UI and only
+terminates a residual process after its window has disappeared, avoiding the
+RDP `0x80072746` lost-connection dialog caused by killing a live session.
+
 ## Required characterization scenarios
 
 - minimum, intermediate, and maximum sling stretch at cardinal and diagonal
