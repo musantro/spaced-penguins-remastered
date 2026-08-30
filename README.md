@@ -1,134 +1,109 @@
 # Spaced Penguins Remastered
 
-A faithful, static browser port of Big Idea's 2002 Macromedia Director game
-*Spaced Penguin*. The production build is framework-free HTML, CSS, Canvas 2D,
-Web Audio, and JavaScript compiled from vanilla TypeScript. It contains all 25
-authored levels and uses the original art, text, and sound.
+> A preservation-minded, faithful browser port of Big Idea's 2002 *Spaced
+> Penguin* game.
 
-Start with:
+[Play the live demo](https://spaced-penguins-remastered.vercel.app/) · [Report a bug](https://github.com/musantro/spaced-penguins-remastered/issues)
 
-- `docs/PORTING_PLAN.md` for milestones;
-- `docs/FIDELITY.md` for the verification contract;
-- `docs/ARCHITECTURE.md` for the target browser design;
-- `docs/TESTING_API.md` for the isolated Director testing API;
-- `docs/EXTRACTION_REPORT.md` for the extracted content and port evidence;
-- `reference/originals/README.md` for provenance and checksums.
+Spaced Penguins Remastered recreates the original Director game as a static
+browser experience built with TypeScript, Canvas 2D and Web Audio. It keeps the
+original 500 × 400 logical stage, 30 fps simulation, 25 playable levels,
+menus, scoring flow and input quirks while adding support for current desktop
+and mobile browsers.
 
-## Run the browser port
+## Status
 
-After the reference material has been prepared once, generate the ignored web
-assets and start Vite:
+The playable port is deployed at
+<https://spaced-penguins-remastered.vercel.app/>.
 
-```text
+The implementation is verified against independent traces and captures from
+the original Director runtime. The port is intentionally a static site: it has
+no application server, account system or global leaderboard. The high-score
+form stays local to the browser and does not send personal data to the retired
+Big Idea CGI endpoint.
+
+## Distribution boundary
+
+This public repository contains source code, tests, documentation, manifests
+and reproducible tooling. It does **not** contain the original DCR/projector,
+reconstructed DIR movie, extracted cast, generated web assets, screenshots,
+Director installer or Sandbox output. Those files are third-party or local
+reference material and are excluded from Git by design. See
+[`docs/DISTRIBUTION.md`](docs/DISTRIBUTION.md) for the complete boundary and
+the clean-clone limitations.
+
+Because the deployed bundle is built from locally held reference material, a
+fresh public clone cannot recreate the live game's asset bundle until that
+material has been obtained and verified locally. Do not commit those files.
+
+## Play locally
+
+If you only want to play, use the [live demo](https://spaced-penguins-remastered.vercel.app/).
+
+To recreate the full local build, use Windows 11 Pro with Windows Sandbox
+enabled, Node.js 22 or newer and pnpm 10:
+
+```powershell
 pnpm install
+pnpm reference:prepare
 pnpm assets:generate
 pnpm dev
 ```
 
-Open the URL printed by Vite. The stage always simulates at 500 by 400 logical
-pixels and 30 frames per second, then scales uniformly to the window. A static
-release is written to `dist/` with:
+Open the URL printed by Vite. The stage always simulates at 500 × 400 logical
+pixels and 30 frames per second, then scales uniformly to the available
+viewport.
 
-```text
-pnpm build
-```
-
-No application server is required for the release. To run the deterministic
-state tests, Director-reference API tests, and browser/pixel tests:
-
-```text
-pnpm test:web
-pnpm test
-pnpm test:e2e
-```
-
-The original Big Idea high-score CGI no longer forms part of the static build.
-Completing the game opens the locally adapted single-Nickname score form and
-keeps the sending transition, but does not transmit personal data.
-
-## Set up a fresh clone
-
-On Windows 11 Pro with Windows Sandbox enabled, run the environment bootstrap
-from the repository root:
+The supported setup path prepares and verifies the local reference material,
+then runs the vintage runtime only inside a disconnected Windows Sandbox:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\setup-environment.ps1
 ```
 
-If pnpm is already available, the equivalent package command is:
+Never run `Spaced_Penguin.exe` or `Director.exe` directly on the host. The
+reference workflow and its safety boundary are documented in
+[`docs/FIDELITY.md`](docs/FIDELITY.md).
+
+## Build and test
+
+After the local reference material is prepared:
 
 ```text
-pnpm setup:environment
+pnpm build       # static production build in dist/
+pnpm typecheck   # TypeScript validation
+pnpm test:web    # deterministic core and rendering tests
+pnpm test        # Director reference API contract tests
+pnpm test:e2e    # Chromium browser and pixel tests
+pnpm check:public # distribution policy, including reachable Git history
 ```
 
-The script installs the locked Node.js dependencies; downloads and verifies the
-originals and tools; reconstructs the canonical DIR; and downloads the verified
-Director 8 trial. On a clean clone it then opens the disconnected Windows
-Sandbox, installs Director once, creates `.tools/director8-cache/`, and leaves
-Director open with the reconstructed game loaded. The script is idempotent:
-later runs validate and reuse a matching cache. Use `-RebuildDirectorCache` only
-when an intentional clean rebuild is required; the previous cache is retained
-under a timestamped `.tools/director8-cache.invalid-*` backup.
+The reference API can inventory levels and screens, run isolated Director
+queries and replay snapshots. Its commands and schemas are documented in
+[`docs/TESTING_API.md`](docs/TESTING_API.md).
 
-## Prepare local reference material
+## Repository map
 
-Install Node.js 22 or newer and pnpm, then run:
+- `src/core/` — deterministic game state, physics and scoring;
+- `src/director-compat/` — compatibility rules characterized against Director;
+- `src/content/` — generated content loading and public content types;
+- `src/render/` and `src/audio/` — Canvas 2D and Web Audio adapters;
+- `tests/` and `src/**/*.test.ts` — browser, pixel and unit coverage;
+- `tools/web/` — local asset/content generation;
+- `tools/reference/` — isolated reference-runtime tooling;
+- `docs/` — architecture, fidelity, extraction and distribution notes;
+- `reference/manifests/` — provenance and hashes without the underlying files.
 
-```text
-pnpm install
-pnpm reference:prepare
-```
+## Contributing
 
-Those lower-level commands remain useful when only the preserved material is
-needed; a new development machine should normally use the setup script above.
+Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) before opening a pull
+request. Small, evidence-backed changes are preferred, especially around
+compatibility math, frame ordering, assets and input handling.
 
-Generated original and derived files are intentionally ignored by Git. Never
-run the downloaded vintage projector directly on the host; use the isolated
-reference setup described in the fidelity document.
+## License and attribution
 
-With Windows Sandbox enabled, close any existing Sandbox window and run:
-
-```text
-pnpm reference:capture
-```
-
-This starts the original only inside the disconnected Sandbox, replays the
-tracked first-level scenario, and writes timestamped 500 by 400 captures under
-the ignored `reference/captures/` directory.
-
-To build the isolated Director 8 authoring oracle, inject the reference
-observer, discover debugger commands, and verify native Lingo tracing without
-screenshots, run:
-
-```text
-pnpm reference:authoring
-```
-
-The first run installs Director inside Windows Sandbox and writes a reusable,
-ignored application cache under `.tools/director8-cache/`. Later runs restore
-that cache, keep the writable `reference/authoring/spacedpenguin_instrumented.dir`
-movie, and open it directly in Director; the vintage installer is not run
-again. The cache is writable only while it is first prepared and is mapped
-read-only on later runs. Windows Sandbox itself remains disposable, with
-networking and host clipboard access disabled. Delete the local cache only
-when an intentional clean reinstall is required.
-
-## Query the Director reference runtime
-
-The testing API runs Director only inside the disconnected Windows Sandbox and
-returns normalized JSON. It can inventory assets, screens, and levels; launch
-Kevin from polar or vector input; capture per-frame trajectories and events;
-and restore a prior gameplay snapshot.
-
-```text
-pnpm reference:assets -- --name ship
-pnpm reference:screens
-pnpm reference:levels
-pnpm reference:verify-all
-pnpm reference:physics -- --level 1 --distance 100 --angle -148.36 --frames 120
-pnpm reference:state -- --level 1 --snapshot reference/test-api/runs/<run>/trace.json --frames 30
-```
-
-Run directories and screenshots are local evidence under the ignored
-`reference/test-api/runs/` tree. See `docs/TESTING_API.md` for the request and
-trace schemas, capture ordering, and safety boundary.
+The original source code, tests, documentation and tooling in this repository
+are available under the [MIT License](LICENSE). The original *Spaced Penguin*
+game, artwork, text, sound and Director materials are third-party works; they
+are not included in this repository and are not relicensed here. See
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md).

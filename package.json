@@ -2,6 +2,26 @@
   "name": "spaced-penguins-remastered",
   "version": "0.0.0",
   "private": true,
+  "description": "A faithful, static browser port of Big Idea's 2002 Spaced Penguin game.",
+  "license": "MIT",
+  "author": "musantro",
+  "homepage": "https://spaced-penguins-remastered.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/musantro/spaced-penguins-remastered.git"
+  },
+  "bugs": {
+    "url": "https://github.com/musantro/spaced-penguins-remastered/issues"
+  },
+  "keywords": [
+    "browser-game",
+    "canvas",
+    "macromedia-director",
+    "preservation",
+    "retro-gaming",
+    "typescript",
+    "web-audio"
+  ],
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -11,6 +31,8 @@
     "test": "node --test tools/reference/test-api/test/*.test.mjs",
     "test:web": "vitest run",
     "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "check:public": "node tools/public/check-distribution.mjs",
     "assets:generate": "node tools/web/generate-content.mjs",
     "dev": "vite",
     "build": "pnpm assets:generate && tsc --noEmit && vite build",

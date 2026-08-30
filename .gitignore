@@ -17,9 +17,20 @@
 /public/assets/manifest.json
 /src/content/generated/
 *.log
+*.dcr
+*.dir
+*.swf
+*.exe
+*.zip
 
 # Local tools, caches, and editor/OS metadata.
 /.tools/
 /.cache/
+.pnpm-store/
+.env
+.env.*
+!.env.example
 .DS_Store
 Thumbs.db
+
+.vercel
