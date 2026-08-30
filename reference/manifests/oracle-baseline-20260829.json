@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "kind": "original-runtime-black-box-oracle",
+  "runId": "20260829-104652",
+  "capturedAtLocalDate": "2026-08-29",
+  "scenario": {
+    "path": "reference/scenarios/001-level-01-max-stretch-to-ship.json",
+    "sha256": "b2f19747f7b949cbc0687f33c0401e5b3c3937f8c34b0d9db328d46fca8db92c"
+  },
+  "canonicalProgram": {
+    "dcrSha256": "22d7a9f9455467c277a0ea920cf1042073f7744446aaecb40476f586941df102",
+    "projectorSha256": "318c0d9c2cb8357c006c017fb3875e75808754b3a2571a54b5f66f5fa9149584"
+  },
+  "environment": {
+    "runtime": "original projector in Windows Sandbox",
+    "networking": false,
+    "clipboardRedirection": false,
+    "protectedClient": true,
+    "clientWidth": 3056,
+    "clientHeight": 786,
+    "stageOffsetX": 1278,
+    "stageOffsetY": 193
+  },
+  "harness": {
+    "path": "tools/reference/sandbox/launch-and-capture.ps1",
+    "sha256": "56bef613513d6964a2a4ecc4d071d83422ee10c5933f745776faa3721174bf08"
+  },
+  "sampling": {
+    "movieFrameRate": 30,
+    "requestedRateHz": 30,
+    "sampleCount": 120,
+    "elapsedMilliseconds": 3999.282,
+    "effectiveRateHz": 29.993,
+    "maximumLatenessMilliseconds": 47.168,
+    "releaseAtSampleClockMilliseconds": 0.981
+  },
+  "captureSet": {
+    "relativeRoot": "reference/captures",
+    "trajectoryDirectory": "trajectory-001-20260829-104652",
+    "includedFileCount": 124,
+    "hashAlgorithm": "sha256-lines-v1",
+    "captureSetSha256": "ef6dfeb3d6d6c51a6f4901d767b77f05e62697ec0be13f9872a041dfab562f5a",
+    "traceSha256": "b9797fd183589c617b06b9cfe3be29e5cf9f484bd7cb29e331f6ac79e312f596",
+    "bootStageSha256": "e74c1a75ff083ce0f7c4f160c75132e8ce2930c18a2f0ec865b2280e3ff1f1b2",
+    "levelOneStageSha256": "d43a7d6d5ab9504261b076d4ae03a5cb48e7a1bdcff94cf9fd76003f4f42fabc",
+    "pullbackSha256": "037a4bc0c1bdecaa11d85740f044bd88695d75c8fc4a2feb65b7aa27e6f4b895"
+  },
+  "stableCheckpoints": [
+    {
+      "file": "trajectory-001-20260829-104652/frame-0017.png",
+      "meaning": "target entry with distance 318 and one try",
+      "sha256": "f0a4e13cd1540074a75fa34c527b369dbf1a1a7bbff0774b19d595d6b2260ba6"
+    },
+    {
+      "file": "trajectory-001-20260829-104652/frame-0049.png",
+      "meaning": "level-complete scoring panel opened",
+      "sha256": "fd1fe16d2aa5e3a53f69919e05ca4bd82f81f9991859192cd4a93e46a38c2516"
+    },
+    {
+      "file": "trajectory-001-20260829-104652/frame-0109.png",
+      "meaning": "score settled at 318",
+      "sha256": "c922918b4967f05dacb0f633be7f4d646006c9f74d92b1f985e61663ef2c77ad"
+    }
+  ],
+  "observations": {
+    "stage": "500x400",
+    "result": "ship reached; distance 318; level score 318",
+    "visualChangeRuns": 23,
+    "knownNondeterminism": "Kevin's animation member is selected with Director random(), so some in-flight frame hashes vary across fresh projector processes. Stable checkpoints above matched repeated runs."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "runId": "20260829-115105",
+  "environment": {
+    "isolation": "Windows Sandbox",
+    "networking": false,
+    "authoringTool": "Macromedia Director 8 Trial",
+    "trialInstallerSha256": "9fffc9c721a59a27d5b444aab0f967215f70f51cdbe23ab9c0df845c6efd4d56"
+  },
+  "inputs": {
+    "canonicalDcr": {
+      "bytes": 92896,
+      "sha256": "22d7a9f9455467c277a0ea920cf1042073f7744446aaecb40476f586941df102"
+    },
+    "reconstructedDir": {
+      "bytes": 347151,
+      "sha256": "a655723a84fcc6e575c6da4371fff0aeb0bdee2ba2c40c4d6c0a9a54cfaf99d8"
+    },
+    "instrumentationSource": {
+      "bytes": 2573,
+      "sha256": "c9fd9978471bcf4e3318f114561de836796db7d4a0ac0f756984f2b011c3a724"
+    }
+  },
+  "outputs": {
+    "instrumentedDir": {
+      "bytes": 619549,
+      "sha256": "265fccd4e50bd242da018e6ed5fe597458a4e1a2a41a094a809bbf098edbc061"
+    },
+    "instrumentationProbe": {
+      "bytes": 25,
+      "sha256": "bd37a488fa2e16badb3a71abf5d910e3d75215c18886da9a28dfd456f4c415b3",
+      "marker": "reference-trace-v1"
+    },
+    "nativeLingoTrace": {
+      "bytes": 48865,
+      "sha256": "2b7c0d2c0414b51a550794fc8b222658aa9f963df1ebbbce9685425ff0e0bceb",
+      "lines": 1356,
+      "handlerEntries": 153,
+      "statementEntries": 852,
+      "valueEntries": 350
+    }
+  },
+  "discoveredDebuggerCommands": {
+    "toggleBreakpoint": 35359,
+    "stepScript": 35349,
+    "stepIntoScript": 35350,
+    "runScript": 35351,
+    "recompileAllScripts": 35334,
+    "debuggerWindow": 9246
+  },
+  "notes": [
+    "Command identifiers are discovered from the Director menu at runtime; recorded values identify this baseline only.",
+    "The native smoke trace covers one second of authoring playback and is stored outside Git.",
+    "The structured level-1 launch trace is a separate pending conformance artifact."
+  ]
+}

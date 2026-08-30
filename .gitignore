@@ -1,0 +1,20 @@
+# Original proprietary game artifacts are downloaded locally and documented by
+# checksum, but are not committed to the repository.
+/reference/originals/files/
+/reference/derived/
+/reference/captures/
+/reference/authoring/
+
+# JavaScript tooling and generated output.
+/node_modules/
+/dist/
+/coverage/
+/playwright-report/
+/test-results/
+*.log
+
+# Local tools, caches, and editor/OS metadata.
+/.tools/
+/.cache/
+.DS_Store
+Thumbs.db

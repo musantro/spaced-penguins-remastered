@@ -1,0 +1,22 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    devDependencies:
+      projectorrays:
+        specifier: 1.1.1
+        version: 1.1.1
+
+packages:
+
+  projectorrays@1.1.1:
+    resolution: {integrity: sha512-kY6kxMQxq/YtNBbp23L+fn+CY1ZUAlVjTnY0LbPhdzcEQ8adkO4baZzOSwWxb4gDnPXw9wE+YpeXD+0mCPyjAA==}
+
+snapshots:
+
+  projectorrays@1.1.1: {}

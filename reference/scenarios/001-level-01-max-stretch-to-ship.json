@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "level-01-max-stretch-to-ship",
+  "description": "Launch Kevin from the first level at the sling limit on a direct course to the ship.",
+  "canonicalProgram": {
+    "dcrSha256": "22d7a9f9455467c277a0ea920cf1042073f7744446aaecb40476f586941df102",
+    "projectorSha256": "318c0d9c2cb8357c006c017fb3875e75808754b3a2571a54b5f66f5fa9149584"
+  },
+  "stage": {
+    "width": 500,
+    "height": 400
+  },
+  "movieFrameRate": 30,
+  "boot": {
+    "settleMilliseconds": 5000,
+    "startButton": {
+      "x": 410,
+      "y": 340
+    },
+    "levelSettleMilliseconds": 3000
+  },
+  "input": {
+    "dragStart": {
+      "x": 413,
+      "y": 303
+    },
+    "dragEnd": {
+      "x": 469,
+      "y": 355
+    },
+    "mouseDownHoldMilliseconds": 100,
+    "pullHoldMilliseconds": 150
+  },
+  "sampling": {
+    "requestedRateHz": 30,
+    "requestedCount": 120
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "spaced-penguins-remastered",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@10.10.0",
+  "scripts": {
+    "setup:environment": "powershell -NoProfile -ExecutionPolicy Bypass -File setup-environment.ps1",
+    "reference:fetch": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/fetch-originals.ps1",
+    "reference:decompile": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/decompile-originals.ps1",
+    "reference:inspect": "node tools/reference/inspect-director.mjs",
+    "reference:extract": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/extract-assets.ps1",
+    "reference:prepare": "pnpm reference:fetch && pnpm reference:decompile && pnpm reference:inspect && pnpm reference:extract",
+    "reference:sandbox": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/create-sandbox-config.ps1",
+    "reference:capture": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/start-sandbox-capture.ps1",
+    "reference:fetch-authoring": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/fetch-authoring-tools.ps1",
+    "reference:authoring-sandbox": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/create-authoring-sandbox-config.ps1",
+    "reference:authoring": "pnpm reference:fetch-authoring && powershell -NoProfile -ExecutionPolicy Bypass -File tools/reference/start-authoring-sandbox.ps1"
+  },
+  "devDependencies": {
+    "projectorrays": "1.1.1"
+  }
+}
